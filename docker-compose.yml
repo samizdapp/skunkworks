@@ -1,0 +1,107 @@
+version: '2'
+volumes:
+    postgres:
+    uploads:
+    static:
+    config:
+    matrix:
+    element:
+    dnsconfig:
+    sqldata:
+    netclient:
+    wireguard:
+    wirehub:
+    pihole1_config:
+    dnsmasq1_config:
+    pihole2_config:
+    dnsmasq2_config:
+    nextcloud:
+    redis:
+    wg:
+services:
+
+  wireguard:
+    build: ./services/wireguard
+    privileged: true
+    network_mode: host
+    ports: 
+      - "7980:7980"
+    labels:
+      io.balena.features.kernel-modules: 1
+    volumes:
+      - wireguard:/wireguard
+
+  pihole1:
+    container_name: pihole
+    build: ./services/pihole
+    privileged: true
+    volumes:
+      - "pihole1_config:/etc/pihole"
+      - "dnsmasq1_config:/etc/dnsmasq.d"
+    dns:
+      - "127.0.0.1"
+      - "1.1.1.1"
+    network_mode: host
+    environment:
+      - INTERFACE=wgone
+      - PIHOLE_INTERFACE=wgone
+      - PIHOLE_ADDRESS=10.0.0.1
+      - LIGHTTPD_PORT=10001
+    labels:
+      io.balena.features.dbus: "1"
+  pihole2:
+    container_name: pihole
+    build: ./services/pihole
+    privileged: true
+    volumes:
+      - "pihole2_config:/etc/pihole"
+      - "dnsmasq2_config:/etc/dnsmasq.d"
+    dns:
+      - "127.0.0.1"
+      - "1.1.1.1"
+    network_mode: host
+    environment:
+      - INTERFACE=wgtwo
+      - PIHOLE_INTERFACE=wgtwo
+      - PIHOLE_ADDRESS=10.0.0.2
+      - LIGHTTPD_PORT=10002
+    labels:
+      io.balena.features.dbus: "1"
+
+  matrix-generate:
+    image: matrixdotorg/synapse:v1.49.2
+    restart: "on-failure"
+    command: generate
+    environment:
+      - SYNAPSE_SERVER_NAME=matrix.local.wg
+      - SYNAPSE_REPORT_STATS=no
+    volumes:
+      - matrix:/data
+  
+  matrix-setup:
+    build: ./services/matrix
+    volumes:
+      - matrix:/data
+
+  matrix:
+    image: matrixdotorg/synapse:v1.49.2
+    restart: always
+    network_mode: host
+    volumes:
+      - matrix:/data
+    depends_on:
+      - matrix-setup
+
+  caddy:
+    build: ./services/caddy
+    restart: always
+    network_mode: host
+    volumes:
+      - element:/element
+      - wireguard:/wireguard
+
+  element:
+    build: ./services/element
+    restart: "on-failure"
+    volumes: 
+      - element:/app

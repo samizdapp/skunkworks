@@ -1,0 +1,16 @@
+
+http://local.wg {
+    file_server browse {
+        root /element/element-v1.9.9
+    }
+}
+
+http://matrix.local.wg {
+    reverse_proxy localhost:8008
+}
+
+http://*.local {
+    file_server browse {
+        root /wireguard
+    }
+}
