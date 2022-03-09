@@ -39,14 +39,15 @@ RUN make -C $(pwd)/wireguard-tools/src -j$(nproc) && \
 
 FROM balenalib/aarch64-debian
 
+
 WORKDIR /wireguard
 COPY --from=builder /usr/src/app/wireguard-linux-compat/src/wireguard.ko .
 COPY --from=builder /usr/src/app/tools .
 
 RUN install_packages kmod wget wireguard-tools dnsutils qrencode miniupnpc
 
-COPY run.sh ./
+COPY run.sh /run.sh
 COPY install.sh /install.sh
 
 ENTRYPOINT [ "/install.sh" ]
-CMD [ "/wireguard/run.sh" ]
+CMD [ "/run.sh" ]

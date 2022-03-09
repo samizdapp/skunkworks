@@ -1,3 +1,6 @@
+{
+    local_certs
+}
 
 http://local.wg {
     file_server browse {
@@ -23,4 +26,14 @@ http://*.local {
     file_server browse {
         root /wireguard
     }
+}
+
+:443 {
+    tls internal {
+        on_demand
+    }
+}
+
+peertube.wg {
+    reverse_proxy localhost:9000
 }
