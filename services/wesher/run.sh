@@ -13,7 +13,10 @@ upnpc -r $WESHER_CONTROL_PORT UDP
 upnpc -r $WESHER_CONTROL_PORT TCP
 
 echo "./wesher --cluster-port $WESHER_CONTROL_PORT --wireguard-port $WESHER_WG_PORT --interface $WESHER_IFACE --bind-iface wlan0 --join $lan --cluster-key"
-./wesher --cluster-port $WESHER_CONTROL_PORT --wireguard-port $WESHER_WG_PORT --overlay-net 10.$WESHER_WG_SUB.0.0/16 --interface $WESHER_IFACE --bind-iface wlan0
+
+./watch_hosts.sh & jobs
+
+./wesher --init true --cluster-port $WESHER_CONTROL_PORT --wireguard-port $WESHER_WG_PORT --overlay-net 10.$WESHER_WG_SUB.0.0/16 --interface $WESHER_IFACE --bind-iface wlan0
 
 # CLUSTER_KEY=$(grep ClusterKey /var/lib/wesher/state.json)
 # echo "CREATED NEW CLUSTER $CLUSTER_KEY"

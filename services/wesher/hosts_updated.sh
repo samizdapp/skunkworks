@@ -31,14 +31,24 @@ else
             PEERTUBE="$HOST.peertube.wg"
             NEWLINE="$IP $HOST $CACERTS $PEERTUBE $BANNER"
             HOSTFILE="$HOSTFILE$NEWLINE"
-
-            curl http://$HOST.cacert/root.crt > /usr/local/share/ca-certificate/$HOST.crt
         fi
     done < /etc/hosts
-
-    update-ca-certificate
 
     echo "$HOSTFILE" > /etc/hosts.tmp
     (sha1sum <<< "$(cat /etc/hosts.tmp)") > /etc/hosts.sha
     cat /etc/hosts.tmp > /etc/hosts
+
+    while read line
+    do
+        echo $line
+        if [[ "$line" == *"$BANNER" ]]; then
+            echo $line
+            STRINGARRAY=($line)
+            HOST=${STRINGARRAY[1]}
+
+            curl http://$HOST.cacert/root.crt > /usr/local/share/ca-certificates/$HOST.crt
+        fi
+    done < /etc/hosts
+
+    update-ca-certificates
 fi
