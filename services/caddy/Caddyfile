@@ -8,6 +8,12 @@ http://local.wg {
     }
 }
 
+http://*.cacert {
+    file_server browse {
+        root /data/caddy/pki/authorities/local/
+    }
+}
+
 http://matrix.local.wg {
     reverse_proxy localhost:8008
 }
@@ -22,18 +28,12 @@ http://roaming.dns {
     reverse_proxy localhost:10002
 }
 
-http://*.local {
+*.peertube.wg {
     file_server browse {
         root /wireguard
     }
 }
 
 :443 {
-    tls internal {
-        on_demand
-    }
-}
-
-peertube.wg {
-    reverse_proxy localhost:9000
+    tls internal
 }

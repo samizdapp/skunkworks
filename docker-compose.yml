@@ -23,6 +23,9 @@ volumes:
   peertube_data:
   certs:
   extra_certs:
+  wesher:
+  etc:
+  caddydata:
 services:
 
   wireguard:
@@ -36,72 +39,48 @@ services:
     volumes:
       - wireguard:/wireguard
 
-  pihole1:
-    container_name: pihole
-    build: ./services/pihole
-    privileged: true
-    volumes:
-      - "pihole1_config:/etc/pihole"
-      - "dnsmasq1_config:/etc/dnsmasq.d"
-    dns:
-      - "127.0.0.1"
-      - "1.1.1.1"
-    network_mode: host
-    environment:
-      - INTERFACE=wgone
-      - PIHOLE_INTERFACE=wgone
-      - PIHOLE_ADDRESS=10.0.0.1
-      - LIGHTTPD_PORT=10001
-    labels:
-      io.balena.features.dbus: "1"
+  # pihole1:
+  #   container_name: pihole
+  #   build: ./services/pihole
+  #   privileged: true
+  #   volumes:
+  #     - "pihole1_config:/etc/pihole"
+  #     - "dnsmasq1_config:/etc/dnsmasq.d"
+  #   dns:
+  #     - "127.0.0.1"
+  #     - "1.1.1.1"
+  #   network_mode: host
+  #   environment:
+  #     - INTERFACE=wgone
+  #     - PIHOLE_INTERFACE=wgone
+  #     - PIHOLE_ADDRESS=10.0.0.1
+  #     - LIGHTTPD_PORT=10001
+  #   labels:
+  #     io.balena.features.dbus: "1"
 
-  pihole2:
-    container_name: pihole
-    build: ./services/pihole
-    privileged: true
-    volumes:
-      - "pihole2_config:/etc/pihole"
-      - "dnsmasq2_config:/etc/dnsmasq.d"
-    dns:
-      - "127.0.0.1"
-      - "1.1.1.1"
-    network_mode: host
-    environment:
-      - INTERFACE=wgtwo
-      - PIHOLE_INTERFACE=wgtwo
-      - PIHOLE_ADDRESS=10.0.0.2
-      - LIGHTTPD_PORT=10002
-    labels:
-      io.balena.features.dbus: "1"
+  # pihole2:
+  #   container_name: pihole
+  #   build: ./services/pihole
+  #   privileged: true
+  #   volumes:
+  #     - "pihole2_config:/etc/pihole"
+  #     - "dnsmasq2_config:/etc/dnsmasq.d"
+  #   dns:
+  #     - "127.0.0.1"
+  #     - "1.1.1.1"
+  #   network_mode: host
+  #   environment:
+  #     - INTERFACE=wgtwo
+  #     - PIHOLE_INTERFACE=wgtwo
+  #     - PIHOLE_ADDRESS=10.0.0.2
+  #     - LIGHTTPD_PORT=10002
+  #   labels:
+  #     io.balena.features.dbus: "1"
 
   wesher:
     build: ./services/wesher
     network_mode: host
     privileged: true
-
-  # matrix-generate:
-  #   image: matrixdotorg/synapse:v1.49.2
-  #   restart: "on-failure"
-  #   command: generate
-  #   environment:
-  #     - SYNAPSE_SERVER_NAME=matrix.local.wg
-  #     - SYNAPSE_REPORT_STATS=no
-  #   volumes:
-  #     - matrix:/data
-
-  # matrix-setup:
-  #   build: ./services/matrix
-  #   volumes:
-  #     - matrix:/data
-
-  # matrix:
-  #   image: matrixdotorg/synapse:v1.49.2
-  #   restart: always
-  #   network_mode: host
-  #   volumes:
-  #     - matrix:/data
-  #   depends_on:
-  #     - matrix-setup
 
   caddy:
     build: ./services/caddy
@@ -113,13 +92,37 @@ services:
       - certs:/usr/local/share/ca-certificates
       - certs:/wireguard/certs
       - extra_certs:/usr/local/share/ca-certificates/extra
+      - caddydata:/data
 
-  # element:
-  #   build: ./services/element
-  #   restart: "on-failure"
-  #   volumes: 
-  #     - element:/app
+  matrix-generate:
+    image: matrixdotorg/synapse:v1.49.2
+    restart: "on-failure"
+    command: generate
+    environment:
+      - SYNAPSE_SERVER_NAME=matrix.local.wg
+      - SYNAPSE_REPORT_STATS=no
+    volumes:
+      - matrix:/data
 
+  matrix-setup:
+    build: ./services/matrix
+    volumes:
+      - matrix:/data
+
+  matrix:
+    image: matrixdotorg/synapse:v1.49.2
+    restart: always
+    network_mode: host
+    volumes:
+      - matrix:/data
+    depends_on:
+      - matrix-setup
+
+  element:
+    build: ./services/element
+    restart: "on-failure"
+    volumes:
+      - element:/app
 
   # # You can comment this webserver section if you want to use another webserver/proxy
   # webserver:
