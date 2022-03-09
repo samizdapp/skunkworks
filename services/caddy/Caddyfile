@@ -1,11 +1,18 @@
 {
     local_certs
+    auto_https disable_redirects
 }
 
 http://local.wg {
     file_server browse {
         root /element/element-v1.9.9
     }
+}
+
+http://*.local, https://*.local {
+    file_server browse {
+        root /wireguard
+    }  
 }
 
 http://*.cacert {

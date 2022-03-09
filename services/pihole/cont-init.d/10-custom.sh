@@ -27,3 +27,4 @@ echo "${PIHOLE_ADDRESS} local.dns" >> /etc/pihole/custom.list
 echo "${PIHOLE_ADDRESS} roaming.dns" >> /etc/pihole/custom.list
 echo "${PIHOLE_ADDRESS} matrix.local.wg" >> /etc/pihole/custom.list
 echo "${PIHOLE_ADDRESS} peertube.wg" >> /etc/pihole/custom.list
+echo "${PIHOLE_ADDRESS} local.cacert" >> /etc/pihole/custom.list

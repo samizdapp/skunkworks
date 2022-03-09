@@ -40,48 +40,48 @@ services:
     volumes:
       - wireguard:/wireguard
 
-  # pihole1:
-  #   container_name: pihole
-  #   build: ./services/pihole
-  #   privileged: true
-  #   volumes:
-  #     - "pihole1_config:/etc/pihole"
-  #     - "dnsmasq1_config:/etc/dnsmasq.d"
-  #   dns:
-  #     - "127.0.0.1"
-  #     - "1.1.1.1"
-  #   network_mode: host
-  #   environment:
-  #     - INTERFACE=wgone
-  #     - PIHOLE_INTERFACE=wgone
-  #     - PIHOLE_ADDRESS=10.0.0.1
-  #     - LIGHTTPD_PORT=10001
-  #   labels:
-  #     io.balena.features.dbus: "1"
-
-  # pihole2:
-  #   container_name: pihole
-  #   build: ./services/pihole
-  #   privileged: true
-  #   volumes:
-  #     - "pihole2_config:/etc/pihole"
-  #     - "dnsmasq2_config:/etc/dnsmasq.d"
-  #   dns:
-  #     - "127.0.0.1"
-  #     - "1.1.1.1"
-  #   network_mode: host
-  #   environment:
-  #     - INTERFACE=wgtwo
-  #     - PIHOLE_INTERFACE=wgtwo
-  #     - PIHOLE_ADDRESS=10.0.0.2
-  #     - LIGHTTPD_PORT=10002
-  #   labels:
-  #     io.balena.features.dbus: "1"
-
-  wesher:
-    build: ./services/wesher
-    network_mode: host
+  pihole1:
+    container_name: pihole
+    build: ./services/pihole
     privileged: true
+    volumes:
+      - "pihole1_config:/etc/pihole"
+      - "dnsmasq1_config:/etc/dnsmasq.d"
+    dns:
+      - "127.0.0.1"
+      - "1.1.1.1"
+    network_mode: host
+    environment:
+      - INTERFACE=wgone
+      - PIHOLE_INTERFACE=wgone
+      - PIHOLE_ADDRESS=10.128.0.1
+      - LIGHTTPD_PORT=10001
+    labels:
+      io.balena.features.dbus: "1"
+
+  pihole2:
+    container_name: pihole
+    build: ./services/pihole
+    privileged: true
+    volumes:
+      - "pihole2_config:/etc/pihole"
+      - "dnsmasq2_config:/etc/dnsmasq.d"
+    dns:
+      - "127.0.0.1"
+      - "1.1.1.1"
+    network_mode: host
+    environment:
+      - INTERFACE=wgtwo
+      - PIHOLE_INTERFACE=wgtwo
+      - PIHOLE_ADDRESS=10.128.0.2
+      - LIGHTTPD_PORT=10002
+    labels:
+      io.balena.features.dbus: "1"
+
+  # wesher:
+  #   build: ./services/wesher
+  #   network_mode: host
+  #   privileged: true
 
   caddy:
     build: ./services/caddy
@@ -167,7 +167,7 @@ services:
   #   # build:
   #   #   context: .
   #   #   dockerfile: ./support/docker/production/Dockerfile.bullseye
-  #   image: chocobozzz/peertube:production-bullseye
+  #   build: ./services/peertube
   #   environment:
   #     - PEERTUBE_DB_USERNAME=peertube
   #     - PEERTUBE_DB_PASSWORD=peertube
@@ -203,30 +203,19 @@ services:
   #   restart: "always"
   # redis:
   #   image: redis:6-alpine
-  #   environment:
-  #     - POSTGRES_USER=postgres
-  #     - POSTGRES_PASSWORD=postgres
-  #     - POSTGRES_DB=peertube
-  #     - PEERTUBE_DB_USERNAME=peertube
-  #     - PEERTUBE_DB_PASSWORD=peertube
-  #     - PEERTUBE_DB_SSL=false
-  #     - PEERTUBE_DB_HOSTNAME=localhost
-  #     - PEERTUBE_WEBSERVER_HOSTNAME=peertube.wg
-  #     - PEERTUBE_TRUST_PROXY=["127.0.0.1", "loopback", "172.18.0.0/16"]
   #   volumes:
   #     - redis:/data
   #   restart: "always"
-
-  # # networks:
-  # #   default:
-  # #     ipam:
-  # #       driver: default
-  # #       config:
-  # #       - subnet: 172.18.0.0/16
-  #   # postfix:
-  #   #   image: mwader/postfix-relay
-  #   #   env_file:
-  #   #     - ./services/peertube/.env
-  #   #   volumes:
-  #   #     - ./docker-volume/opendkim/keys:/etc/opendkim/keys
-  #   #   restart: "always"
+  # # # networks:
+  # # #   default:
+  # # #     ipam:
+  # # #       driver: default
+  # # #       config:
+  # # #       - subnet: 172.18.0.0/16
+  # #   # postfix:
+  # #   #   image: mwader/postfix-relay
+  # #   #   env_file:
+  # #   #     - ./services/peertube/.env
+  # #   #   volumes:
+  # #   #     - ./docker-volume/opendkim/keys:/etc/opendkim/keys
+  # #   #   restart: "always"
