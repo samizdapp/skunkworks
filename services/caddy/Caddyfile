@@ -36,9 +36,7 @@ http://roaming.dns {
 }
 
 *.peertube.wg {
-    file_server browse {
-        root /wireguard
-    }
+    reverse_proxy localhost:9000
 }
 
 :443 {

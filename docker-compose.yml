@@ -162,60 +162,60 @@ services:
   #   depends_on:
   #     - webserver
 
-  # peertube:
-  #   # If you don't want to use the official image and build one from sources:
-  #   # build:
-  #   #   context: .
-  #   #   dockerfile: ./support/docker/production/Dockerfile.bullseye
-  #   build: ./services/peertube
-  #   environment:
-  #     - PEERTUBE_DB_USERNAME=peertube
-  #     - PEERTUBE_DB_PASSWORD=peertube
-  #     - PEERTUBE_DB_SSL=false
-  #     - PEERTUBE_DB_HOSTNAME=postgres
-  #     - PEERTUBE_WEBSERVER_HOSTNAME=peertube.wg
-  #     - PEERTUBE_TRUST_PROXY=["127.0.0.1", "loopback", "172.18.0.0/16"]
-  #     - PEERTUBE_ADMIN_EMAIL=test@example.com
-  #     - PT_INITIAL_ROOT_PASSWORD=testpassword
-  #   ports:
-  #     - "1935:1935" # If you don't want to use the live feature, you can comment this line
-  #     - "9000:9000" # If you provide your own webserver and reverse-proxy, otherwise not suitable for production
-  #   volumes:
-  #     - assets:/app/client/dist
-  #     - peertube_data:/data
-  #     - peertube_config:/config
-  #     - certs:/usr/local/share/ca-certificates
-  #     - extra_certs:/usr/local/share/ca-certificates/extra
-  #     - etc:/etc
-  #   depends_on:
-  #     - postgres
-  #     - redis
-  #     # - postfix
-  #   restart: "always"
-  # postgres:
-  #   image: postgres:13-alpine
-  #   environment:
-  #     - POSTGRES_USER=peertube
-  #     - POSTGRES_PASSWORD=peertube
-  #     - POSTGRES_DB=peertube
-  #   volumes:
-  #     - postgres:/var/lib/postgresql/data
-  #   restart: "always"
-  # redis:
-  #   image: redis:6-alpine
-  #   volumes:
-  #     - redis:/data
-  #   restart: "always"
-  # # # networks:
-  # # #   default:
-  # # #     ipam:
-  # # #       driver: default
-  # # #       config:
-  # # #       - subnet: 172.18.0.0/16
-  # #   # postfix:
-  # #   #   image: mwader/postfix-relay
-  # #   #   env_file:
-  # #   #     - ./services/peertube/.env
-  # #   #   volumes:
-  # #   #     - ./docker-volume/opendkim/keys:/etc/opendkim/keys
-  # #   #   restart: "always"
+  peertube:
+    # If you don't want to use the official image and build one from sources:
+    # build:
+    #   context: .
+    #   dockerfile: ./support/docker/production/Dockerfile.bullseye
+    build: ./services/peertube
+    environment:
+      - PEERTUBE_DB_USERNAME=peertube
+      - PEERTUBE_DB_PASSWORD=peertube
+      - PEERTUBE_DB_SSL=false
+      - PEERTUBE_DB_HOSTNAME=postgres
+      - PEERTUBE_WEBSERVER_HOSTNAME=peertube.wg
+      - PEERTUBE_TRUST_PROXY=["127.0.0.1", "loopback", "172.18.0.0/16"]
+      - PEERTUBE_ADMIN_EMAIL=test@example.com
+      - PT_INITIAL_ROOT_PASSWORD=testpassword
+    ports:
+      - "1935:1935" # If you don't want to use the live feature, you can comment this line
+      - "9000:9000" # If you provide your own webserver and reverse-proxy, otherwise not suitable for production
+    volumes:
+      - assets:/app/client/dist
+      - peertube_data:/data
+      - peertube_config:/config
+      - certs:/usr/local/share/ca-certificates
+      - extra_certs:/usr/local/share/ca-certificates/extra
+      - etc:/etc
+    depends_on:
+      - postgres
+      - redis
+      # - postfix
+    restart: "always"
+  postgres:
+    image: postgres:13-alpine
+    environment:
+      - POSTGRES_USER=peertube
+      - POSTGRES_PASSWORD=peertube
+      - POSTGRES_DB=peertube
+    volumes:
+      - postgres:/var/lib/postgresql/data
+    restart: "always"
+  redis:
+    image: redis:6-alpine
+    volumes:
+      - redis:/data
+    restart: "always"
+  # # networks:
+  # #   default:
+  # #     ipam:
+  # #       driver: default
+  # #       config:
+  # #       - subnet: 172.18.0.0/16
+  #   # postfix:
+  #   #   image: mwader/postfix-relay
+  #   #   env_file:
+  #   #     - ./services/peertube/.env
+  #   #   volumes:
+  #   #     - ./docker-volume/opendkim/keys:/etc/opendkim/keys
+  #   #   restart: "always"
