@@ -1,7 +1,7 @@
-FROM balenalib/amd64-debian as builder
+# Change this to armv7hf for the BeagleBone Black
+FROM balenalib/amd64-debian:latest-build as builder
 
-RUN install_packages curl gcc-9 g++-9 build-essential libelf-dev libssl-dev pkg-config git flex bison python
-RUN sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-9 100 --slave /usr/bin/g++ g++ /usr/bin/g++-9 --slave /usr/bin/gcov gcov /usr/bin/gcov-9
+RUN install_packages gcc-9 libelf-dev pkg-config flex bison python
 WORKDIR /usr/src/app
 
 RUN git clone https://git.zx2c4.com/wireguard-linux-compat && \
@@ -15,18 +15,24 @@ RUN git clone https://git.zx2c4.com/wireguard-linux-compat && \
 # ENV VERSION '2.83.10+rev1.dev'
 # ENV BALENA_MACHINE_NAME 'rockpi-4b-rk3399'
 
+# for beaglebone-black
+# ENV VERSION '2.85.16+rev1.dev'
+# ENV BALENA_MACHINE_NAME 'beaglebone-black'
+
 # docker
 ENV VERSION '2.83.18+rev1.dev'
 ENV BALENA_MACHINE_NAME 'genericx86-64-ext'
 
-RUN curl -L -o headers.tar.gz $(echo "https://files.balena-cloud.com/images/$BALENA_MACHINE_NAME/$VERSION/kernel_modules_headers.tar.gz" | sed -e 's/+/%2B/') && \
-    tar -xf headers.tar.gz
+RUN curl -L https://files.balena-cloud.com/images/$BALENA_MACHINE_NAME/$(echo $VERSION | sed s/+/%2B/)/kernel_modules_headers.tar.gz | tar xz
 
 # Download missing header(s) https://forums.balena.io/t/build-kernel-module-out-of-tree-for-jetson/295852/22
-RUN mkdir -p kernel_modules_headers/arch/arm/include/asm/xen && \
-    curl -SsL -o kernel_modules_headers/arch/arm/include/asm/xen/hypervisor.h \
-    https://raw.githubusercontent.com/OE4T/linux-tegra-4.9/oe4t-patches-l4t-r32.6/arch/arm/include/asm/xen/hypervisor.h
-
+# This is required on some devices like the RockPi 4B
+RUN HYPERVISOR_HEADER=kernel_modules_headers/arch/arm/include/asm/xen/hypervisor.h && \
+    if [ ! -f $HYPERVISOR_HEADER ]; then \
+        mkdir -p $(dirname $HYPERVISOR_HEADER) && \
+        curl -SsL -o $HYPERVISOR_HEADER \
+        https://raw.githubusercontent.com/OE4T/linux-tegra-4.9/oe4t-patches-l4t-r32.6/arch/arm/include/asm/xen/hypervisor.h; \
+    fi
 
 RUN ln -s /lib64/ld-linux-arm64.so.2  /lib/ld-linux-arm64.so.2 || true
 RUN ln -s /lib64/ld-linux-x86-64.so.2  /lib/ld-linux-x86-64.so.2 || true
