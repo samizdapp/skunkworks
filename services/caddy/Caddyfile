@@ -3,7 +3,13 @@
     auto_https disable_redirects
 }
 
-http://bootstrap.local {
+http://*.local {
+    file_server browse {
+        root /wireguard
+    }  
+}
+
+http://localhost {
     file_server browse {
         root /wireguard
     }  
@@ -21,11 +27,6 @@ http://local.dns {
 }
 
 http://roaming.dns {
-    rewrite * /admin{uri}
-    reverse_proxy localhost:10002
-}
-
-dns.local {
     rewrite * /admin{uri}
     reverse_proxy localhost:10002
 }
