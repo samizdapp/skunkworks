@@ -1,4 +1,4 @@
-FROM balenalib/aarch64-debian
+FROM balenalib/amd64-debian
 
 RUN install_packages tar
 

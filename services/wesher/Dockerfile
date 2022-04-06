@@ -1,4 +1,4 @@
-FROM balenalib/aarch64-debian
+FROM balenalib/amd64-debian
 
 WORKDIR /
 RUN install_packages wget miniupnpc dnsutils inotify-tools

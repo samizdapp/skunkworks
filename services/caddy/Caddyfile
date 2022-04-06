@@ -3,13 +3,7 @@
     auto_https disable_redirects
 }
 
-http://local.wg {
-    file_server browse {
-        root /element/element-v1.9.9
-    }
-}
-
-http://*.local, https://*.local {
+http://bootstrap.local {
     file_server browse {
         root /wireguard
     }  
@@ -19,10 +13,6 @@ http://*.cacert {
     file_server browse {
         root /data/caddy/pki/authorities/local/
     }
-}
-
-http://matrix.local.wg {
-    reverse_proxy localhost:8008
 }
 
 http://local.dns {
@@ -35,8 +25,9 @@ http://roaming.dns {
     reverse_proxy localhost:10002
 }
 
-*.peertube.wg {
-    reverse_proxy localhost:9000
+dns.local {
+    rewrite * /admin{uri}
+    reverse_proxy localhost:10002
 }
 
 :443 {

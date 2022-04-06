@@ -18,7 +18,7 @@ WGTWO_PUB=$(echo $WGTWO_PRIV | wg pubkey)
 CLIENT1_PUB=$(echo $CLIENT1_PRIV | wg pubkey)
 CLIENT2_PUB=$(echo $CLIENT2_PRIV | wg pubkey)
 
-port=51819
+port=51822
 upnpc -r $port UDP
 
 if [ ! -f /wireguard/wgone.conf ]
@@ -67,7 +67,7 @@ Address = 10.128.0.1/32
 ListenPort = 51821
 PrivateKey = $WGONE_PRIV
 Table = wgone
-PostUp = ip rule add from 10.128.0.1 table wgone prio 1
+PostUp = ip rule add from 10.128.0.1 table wgone prio 1 
 
 [Peer]
 PublicKey = $CLIENT1_PUB
@@ -97,6 +97,8 @@ AllowedIPs = 10.128.0.12/32
 
 fi
 
+ip rule del from 10.128.0.2
+ip rule del from 10.128.0.1
 wg-quick down /wireguard/wgone.conf
 wg-quick down /wireguard/wgtwo.conf
 wg-quick up /wireguard/wgone.conf
