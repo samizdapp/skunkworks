@@ -1,4 +1,4 @@
-# Skunky
+# Skunkworks
 
 This is some R&D code for the samizdapp project. Very messy, but functional. More docs coming soon. In the meantime, message Ryan with questions.
 
