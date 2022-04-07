@@ -5,9 +5,6 @@ mkdir output
 KERNEL_RELEASE=$(cat kernel_modules_headers/include/config/kernel.release)
 dpkg --compare-versions $KERNEL_RELEASE ge 5.6 && exit 0
 
-git clone https://git.zx2c4.com/wireguard-linux-compat
-git clone https://git.zx2c4.com/wireguard-tools
-
 # Download missing header(s) https://forums.balena.io/t/build-kernel-module-out-of-tree-for-jetson/295852/22
 # This is required on some devices like the RockPi 4B
 HYPERVISOR_HEADER=kernel_modules_headers/arch/arm/include/asm/xen/hypervisor.h

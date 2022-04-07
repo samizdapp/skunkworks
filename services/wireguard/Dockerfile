@@ -22,7 +22,8 @@ ENV BALENA_MACHINE_NAME 'genericx86-64-ext'
 
 RUN curl -L https://files.balena-cloud.com/images/$BALENA_MACHINE_NAME/$(echo $VERSION | sed s/+/%2B/)/kernel_modules_headers.tar.gz | tar xz
 
-COPY build.sh .
+COPY fetch.sh build.sh ./
+RUN [ "sh", "fetch.sh" ]
 RUN [ "sh", "build.sh" ]
 
 FROM balenalib/amd64-debian
