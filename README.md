@@ -10,7 +10,7 @@ This repo contains bare minimum setup to configure a dev environment or raspberr
 
 Prerequisits: [docker, docker-compose](https://docs.docker.com/compose/install/), and [wireguard](https://www.wireguard.com/install/) for your development machine and optionally a phone.
 
-- run `docker-compose up --build`, this will start two wireguard interfaces and generate two client configurations
+- run the `install.sh` script, this will start two wireguard interfaces and generate two client configurations
 - visit http://localhost to download client configuration `client1.conf`
 - from a terminal, run `wg-quick up ./client1.conf`
 - visit http://local.dns and http://roaming.dns to view the web interfaces for the two PiHole instances
