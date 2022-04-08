@@ -18,6 +18,8 @@ Prerequisits: [docker, docker-compose](https://docs.docker.com/compose/install/)
 - scan the qr code with your mobile wireguard client
 - activate the vpn and try to visit http://local.dns and http://roaming.dns from your phone (try turning off WiFi too to demonstrate roaming)
 
+**NOTE: setting up the client VPN will redirect DNS queries to pihole over the VPN, this means that if you tear down the docker environment, you won't have DNS anymore until you tear down your client environment with `wg-quick down ./client1.conf`**
+
 At this point, you now have a roaming capable tunnel to your dev environment, and can start hacking on other services.
 
 ## Getting started (Hardware)
@@ -41,4 +43,4 @@ At this point, you now have a roaming capable tunnel to your hardware environmen
 
 ### Hacking Services
 
-Coming soon
+see [the services readme](./services/README.md) for the steps to add a service to the compose file, and an example.
