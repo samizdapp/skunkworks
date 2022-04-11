@@ -7,6 +7,13 @@ This guide was adapted from an existing
 [article](https://www.balena.io/blog/no-hardware-use-virtualbox/) on
 balena's website. It assumes that you already have a balena account.
 
+## Quick start
+1. Create a x86_64 fleet
+2. Add a device and download balenaOS
+3. Convert the image to a VDI
+4. Add it to a virtual machine
+5. Start it!
+
 ## On balenaCloud
 ### Creating a fleet
 Head to the balena [dashboard](https://dashboard.balena-cloud.com) and

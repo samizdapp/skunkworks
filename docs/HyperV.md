@@ -7,6 +7,13 @@ already able to create VMs with the Hyper-V Manager application.
 This guide covers installing skunkworks on Ubuntu 20.04. The version
 of Windows running on the host machine in this guide is 21H2.
 
+## Quick start
+1. Create a bridged network adapter
+2. Create a new virtual machine
+3. Upgrade the system
+4. Enable enhanced sessions
+5. Install skunkworks!
+
 ## Installing Ubuntu as a VM
 ### Creating a bridged network adapter
 In order for UPnP to work, a bridged network must be used instead of

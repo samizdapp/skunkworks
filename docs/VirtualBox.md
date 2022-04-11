@@ -5,6 +5,13 @@ already familiar with creating VMs with VirtualBox.
 
 This guide covers installing skunkworks on Debian 11.
 
+## Quick start
+1. Create a new virtual machine
+2. Change network type to bridged
+3. Install Debian
+4. Upgrade the system
+5. Install skunkworks!
+
 ## Installing Ubuntu as a VM
 ### Creating the virtual machine
 Create the virtual machine normally for your distro of choice and

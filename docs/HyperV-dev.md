@@ -5,6 +5,13 @@ and local development.
 
 This guide assumes that you already have a balena account.
 
+## Quick start
+1. Create a x86_64 fleet
+2. Add a device and download balenaOS
+3. Convert the image to a VHDX
+4. Add it to a virtual machine
+5. Start it!
+
 ## On balenaCloud
 ### Creating a fleet
 Head to the balena [dashboard](https://dashboard.balena-cloud.com) and
