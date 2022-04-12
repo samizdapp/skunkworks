@@ -64,6 +64,18 @@ Running balenaOS in a virtual machine provides rapid iteration and feedback. Her
 - [VirtualBox](docs/VirtualBox-dev.md)
 - [Hyper-V](docs/HyperV-dev.md)
 
+## Connecting Nodes
+
+This approach is subject to rapid change, but currently this repo uses [wesher](https://github.com/samizdapp/wesher) (original by [@costella](https://github.com/costela/wesher))
+
+to connect two nodes:
+
+- complete "getting started" on both
+- `curl http://<id.local/localhost>/wesher/invite.sh
+- copy the bash string into clipboard
+- ssh/exec into other nodes wesher container
+- paste and execute invite script
+
 ### Hacking Services
 
 see [the services readme](./services/README.md) for the steps to add a service to the compose file, and an example.
