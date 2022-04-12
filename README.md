@@ -26,7 +26,7 @@ sudo apt install git docker docker-compose wireguard-tools resolvconf`
 
 - clone the repository and any submodules with `git clone https://github.com/samizdapp/skunkworks.git --recurse-submodules`.
 - Add current user to the docker group, `sudo usermod -aG docker $USER`. And log out and back in or restart.
-- run `docker-compose up --build`, this will start two wireguard interfaces and generate two client configurations
+- run the `install.sh` script, this will start two wireguard interfaces and generate two client configurations
 - visit http://localhost to download client configuration `client1.conf`
 - from a terminal, run `wg-quick up ./client1.conf`
 - visit http://local.dns and http://roaming.dns to view the web interfaces for the two PiHole instances
