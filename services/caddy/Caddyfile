@@ -5,8 +5,8 @@
 
 http://*.local {
     file_server browse {
-        root /wireguard
-    }  
+        root /
+    }
 }
 
 http://localhost {

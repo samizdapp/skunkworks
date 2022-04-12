@@ -90,6 +90,7 @@ services:
       - certs:/wireguard/certs
       - extra_certs:/usr/local/share/ca-certificates/extra
       - caddydata:/data
+      - wesher:/wesher
   wesher:
     build: ./services/wesher
     network_mode: host

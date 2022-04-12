@@ -1,8 +1,8 @@
 FROM balenalib/%%BALENA_ARCH%%-debian
 
 WORKDIR /
-RUN install_packages wget miniupnpc dnsutils inotify-tools
-COPY fetch-helper.sh run.sh hosts_updated.sh watch_hosts.sh ./
+RUN install_packages wget miniupnpc dnsutils inotify-tools net-tools
+COPY fetch-helper.sh run.sh hosts_updated.sh watch_hosts.sh join.sh ./
 RUN chmod u+x fetch-helper.sh run.sh hosts_updated.sh watch_hosts.sh
 RUN wget -O wesher $(./fetch-helper.sh %%BALENA_ARCH%%)
 RUN chmod u+x wesher
