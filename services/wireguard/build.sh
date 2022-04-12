@@ -10,8 +10,7 @@ dpkg --compare-versions $KERNEL_RELEASE ge 5.6 && exit 0
 HYPERVISOR_HEADER=kernel_modules_headers/arch/arm/include/asm/xen/hypervisor.h
 if [ ! -f $HYPERVISOR_HEADER ]; then
     mkdir -p $(dirname $HYPERVISOR_HEADER)
-    curl -SsL -o $HYPERVISOR_HEADER
-    https://raw.githubusercontent.com/OE4T/linux-tegra-4.9/oe4t-patches-l4t-r32.6/arch/arm/include/asm/xen/hypervisor.h
+    curl -SsL -o $HYPERVISOR_HEADER https://raw.githubusercontent.com/OE4T/linux-tegra-4.9/oe4t-patches-l4t-r32.6/arch/arm/include/asm/xen/hypervisor.h
 fi
 
 ln -s /lib64/ld-linux-arm64.so.2  /lib/ld-linux-arm64.so.2 || true
