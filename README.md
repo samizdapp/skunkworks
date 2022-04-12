@@ -27,10 +27,10 @@ sudo apt install git docker docker-compose wireguard-tools resolvconf`
 - clone the repository and any submodules with `git clone https://github.com/samizdapp/skunkworks.git --recurse-submodules`.
 - Add current user to the docker group, `sudo usermod -aG docker $USER`. And log out and back in or restart.
 - run the `install.sh` script, this will start two wireguard interfaces and generate two client configurations
-- visit http://localhost to download client configuration `client1.conf`
+- visit http://localhost/wireguard to download client configuration `client1.conf`
 - from a terminal, run `wg-quick up ./client1.conf`
 - visit http://local.dns and http://roaming.dns to view the web interfaces for the two PiHole instances
-- go back to http://localhost and view `client2.png`
+- go back to http://localhost/wireguard and view `client2.png`
 - scan the qr code with your mobile wireguard client
 - activate the vpn and try to visit http://local.dns and http://roaming.dns from your phone (try turning off WiFi too to demonstrate roaming)
 
@@ -48,10 +48,10 @@ Note: there are some magic strings in wireguard/Dockerfile and caddy/dockerfile.
 - run `balena push <id>.local`
 - wait until command line settles
 - reboot device via balena website
-- visit http://<id>.local to download client configuration `client1.conf`
+- visit http://<id>.local/wireguard to download client configuration `client1.conf`
 - from a terminal, run `wg-quick up ./client1.conf`
 - visit http://local.dns and http://roaming.dns to view the web interfaces for the two PiHole instances
-- go back to http://localhost and view `client2.png`
+- go back to http://<id>.local/wireguard and view `client2.png`
 - scan the qr code with your mobile wireguard client
 - activate the vpn and try to visit http://local.dns and http://roaming.dns from your phone (try turning off WiFi too to demonstrate roaming)
 
