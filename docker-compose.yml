@@ -90,10 +90,12 @@ services:
       - certs:/wireguard/certs
       - extra_certs:/usr/local/share/ca-certificates/extra
       - caddydata:/data
-  # wesher:
-  #   build: ./services/wesher
-  #   network_mode: host
-  #   privileged: true
+  wesher:
+    build: ./services/wesher
+    network_mode: host
+    privileged: true
+    volumes:
+      - wesher:/var/lib/wesher
   # pleroma_db:
   #   image: amd64/postgres:12.9-alpine
   #   container_name: pleroma_db

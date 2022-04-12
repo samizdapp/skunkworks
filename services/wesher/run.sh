@@ -12,11 +12,17 @@ upnpc -r $WESHER_WG_PORT UDP
 upnpc -r $WESHER_CONTROL_PORT UDP
 upnpc -r $WESHER_CONTROL_PORT TCP
 
-echo "./wesher --cluster-port $WESHER_CONTROL_PORT --wireguard-port $WESHER_WG_PORT --interface $WESHER_IFACE --bind-iface wlan0 --join $lan --cluster-key"
+mkdir -p /var/lib/wesher
+if [ ! -f /var/lib/wesher/cluster.key ]
+then
+echo "$(head -c 32 /dev/random | base64)" > /var/lib/wesher/cluster.key
+fi
+
+CLUSTER_KEY=$(cat /var/lib/wesher/cluster.key)
 
 ./watch_hosts.sh & jobs
 
-./wesher --init true --cluster-port $WESHER_CONTROL_PORT --wireguard-port $WESHER_WG_PORT --overlay-net 10.$WESHER_WG_SUB.0.0/16 --interface $WESHER_IFACE --bind-iface wlan0
+JOIN_COMMAND="./wesher --cluster-port $WESHER_CONTROL_PORT --wireguard-port $WESHER_WG_PORT --interface $WESHER_IFACE --join $lan --cluster-key $CLUSTER_KEY"
+echo $JOIN_COMMAND
 
-# CLUSTER_KEY=$(grep ClusterKey /var/lib/wesher/state.json)
-# echo "CREATED NEW CLUSTER $CLUSTER_KEY"
+./wesher --cluster-port $WESHER_CONTROL_PORT --wireguard-port $WESHER_WG_PORT --overlay-net 10.$WESHER_WG_SUB.0.0/16 --interface $WESHER_IFACE --log-level debug --cluster-key $CLUSTER_KEY
