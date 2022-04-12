@@ -8,8 +8,24 @@ This repo contains bare minimum setup to configure a dev environment or raspberr
 
 ## Getting started (Docker)
 
-Prerequisits: [docker, docker-compose](https://docs.docker.com/compose/install/), and [wireguard](https://www.wireguard.com/install/) for your development machine and optionally a phone.
+### Virtual machine guides
 
+If you plan on running skunkworks in a virtual machine, we offer some guides to get you started:
+
+- [VirtualBox](docs/VirtualBox.md)
+- [Hyper-V](docs/HyperV.md)
+
+Prerequisits: [docker, docker-compose](https://docs.docker.com/compose/install/), and [wireguard](https://www.wireguard.com/install/) for your development machine and optionally a phone.
+At least on Ubuntu, installing the `wireguard-tools` packaged does not pull down it's dependency `resolvconf`. So install that too.
+
+This command can be used to install all dependencies:
+
+```
+sudo apt install git docker docker-compose wireguard-tools resolvconf`
+```
+
+- clone the repository and any submodules with `git clone https://github.com/samizdapp/skunkworks.git --recurse-submodules`.
+- Add current user to the docker group, `sudo usermod -aG docker $USER`. And log out and back in or restart.
 - run `docker-compose up --build`, this will start two wireguard interfaces and generate two client configurations
 - visit http://localhost to download client configuration `client1.conf`
 - from a terminal, run `wg-quick up ./client1.conf`
@@ -40,6 +56,13 @@ Note: there are some magic strings in wireguard/Dockerfile and caddy/dockerfile.
 - activate the vpn and try to visit http://local.dns and http://roaming.dns from your phone (try turning off WiFi too to demonstrate roaming)
 
 At this point, you now have a roaming capable tunnel to your hardware environment, and can start hacking on services
+
+## balenaOS in a VM (Development)
+
+Running balenaOS in a virtual machine provides rapid iteration and feedback. Here are some guides to get you set up on your software of choice.
+
+- [VirtualBox](docs/VirtualBox-dev.md)
+- [Hyper-V](docs/HyperV-dev.md)
 
 ### Hacking Services
 
