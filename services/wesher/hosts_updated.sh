@@ -29,7 +29,8 @@ else
             HOST=${STRINGARRAY[1]}
             CACERTS="$HOST.cacert"
             PEERTUBE="$HOST.peertube.wg"
-            NEWLINE="$IP $HOST $CACERTS $PEERTUBE $BANNER"
+            LOCAL="$HOST.local"
+            NEWLINE="$IP $HOST $CACERTS $PEERTUBE $LOCAL $BANNER"
             HOSTFILE="$HOSTFILE$NEWLINE"
         fi
     done < /etc/hosts
