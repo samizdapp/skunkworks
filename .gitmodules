@@ -1,0 +1,3 @@
+[submodule "services/docker-pleroma"]
+	path = services/docker-pleroma
+	url = https://github.com/samizdapp/docker-pleroma

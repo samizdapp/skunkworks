@@ -19,7 +19,7 @@ CLIENT1_PUB=$(echo $CLIENT1_PRIV | wg pubkey)
 CLIENT2_PUB=$(echo $CLIENT2_PRIV | wg pubkey)
 
 port=51822
-upnpc -r $port UDP
+upnpc -a $lan $port $port UDP
 
 if [ ! -f /wireguard/wgone.conf ]
 then

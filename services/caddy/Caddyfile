@@ -31,6 +31,12 @@ http://roaming.dns {
     reverse_proxy localhost:10002
 }
 
+pleroma.wg {
+    reverse_proxy localhost:4000 {
+        header_up Host {upstream_hostport}
+    }
+}
+
 :443 {
     tls internal
 }
