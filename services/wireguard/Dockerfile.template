@@ -1,24 +1,10 @@
 FROM balenalib/%%BALENA_ARCH%%-debian:latest-build as builder
 
-RUN install_packages curl gcc-9 g++-9 libelf-dev pkg-config flex bison python
+RUN install_packages curl gcc-9 g++-9 libelf-dev pkg-config flex bison python jq
 WORKDIR /usr/src/app
 
-# for raspberry pi
-# ENV VERSION '2.88.4.dev'
-
-# for rockpi
-ENV VERSION '2.83.10+rev1.dev'
-
-# for beaglebone-black
-# ENV VERSION '2.85.16+rev1.dev'
-
-# docker
-# ENV VERSION '2.83.18+rev1.dev'
-
-RUN curl -L https://files.balena-cloud.com/images/%%BALENA_MACHINE_NAME%%/$(echo $VERSION | sed s/+/%2B/)/kernel_modules_headers.tar.gz | tar xz
-
 COPY fetch.sh build.sh ./
-RUN [ "sh", "fetch.sh" ]
+RUN [ "sh", "fetch.sh", "%%BALENA_MACHINE_NAME%%" ]
 RUN [ "sh", "build.sh" ]
 
 FROM balenalib/%%BALENA_ARCH%%-debian
