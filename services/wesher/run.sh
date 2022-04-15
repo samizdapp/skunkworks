@@ -8,8 +8,8 @@ WESHER_IFACE="overlay$(hostname)"
 BIND_IFACE=$(route | grep '^default' | grep -o '[^ ]*$')
 # https://superuser.com/a/1403037
 BIND_ADDR=$(ip -6 addr|awk '{print $2}'|grep -P '^(?!fe80)[[:alnum:]]{4}:.*/64'|cut -d '/' -f1 | head -1)
-wan=$(dig +short txt ch whoami.cloudflare @1.0.0.1 | tr -d '"')
-lan=$(upnpc -l | grep "Local LAN ip address" | cut -d: -f2)
+WAN_ADDR=$(dig +short txt ch whoami.cloudflare @1.0.0.1 | tr -d '"')
+LAN_ADDR=$(upnpc -l | grep "Local LAN ip address" | cut -d: -f2)
 
 upnpc -r $WESHER_WG_PORT UDP
 upnpc -r $WESHER_CONTROL_PORT UDP
@@ -25,10 +25,18 @@ CLUSTER_KEY=$(cat /var/lib/wesher/cluster.key)
 
 ./watch_hosts.sh & jobs
 
-JOIN_COMMAND="./wesher --cluster-port $WESHER_CONTROL_PORT --wireguard-port $WESHER_WG_PORT --overlay-net fe80:$WESHER_WG_SUB::/32 --interface $WESHER_IFACE --join $BIND_ADDR --cluster-key $CLUSTER_KEY"
-echo $JOIN_COMMAND
-echo "#!/bin/bash" > /var/lib/wesher/invite.sh
-echo $JOIN_COMMAND >> /var/lib/wesher/invite.sh
-chmod +x /var/lib/wesher/invite.sh
+LAN_JOIN_COMMAND="./wesher --cluster-port $WESHER_CONTROL_PORT --wireguard-port $WESHER_WG_PORT --overlay-net fe80:$WESHER_WG_SUB::/32 --interface $WESHER_IFACE --join $LAN_ADDR --cluster-key $CLUSTER_KEY"
+echo $LAN_JOIN_COMMAND
+echo "#!/bin/bash" > /var/lib/wesher/lan_invite.sh
+echo $LAN_JOIN_COMMAND >> /var/lib/wesher/lan_invite.sh
+
+WAN_JOIN_COMMAND="./wesher --cluster-port $WESHER_CONTROL_PORT --wireguard-port $WESHER_WG_PORT --overlay-net fe80:$WESHER_WG_SUB::/32 --interface $WESHER_IFACE --join $WAN_ADDR --cluster-key $CLUSTER_KEY"
+echo $WAN_JOIN_COMMAND
+echo "#!/bin/bash" > /var/lib/wesher/wan_invite.sh
+echo $WAN_JOIN_COMMAND >> /var/lib/wesher/wan_invite.sh
+
+
+chmod +x /var/lib/wesher/lan_invite.sh
+chmod +x /var/lib/wesher/wan_invite.sh
 
 ./wesher --init true --cluster-port $WESHER_CONTROL_PORT --wireguard-port $WESHER_WG_PORT --overlay-net fe80:$WESHER_WG_SUB::/32 --interface $WESHER_IFACE --log-level debug --cluster-key $CLUSTER_KEY --bind-addr $BIND_ADDR

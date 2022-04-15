@@ -71,7 +71,9 @@ This approach is subject to rapid change, but currently this repo uses [wesher](
 to connect two nodes:
 
 - complete "getting started" on both
-- `curl http://<id.local/localhost>/wesher/invite.sh
+- curl the invite command:
+  - LAN: http://<id.local/localhost>/wesher/lan_invite.sh
+  - WAN: http://<id.local/localhost>/wesher/wan_invite.sh
 - copy the bash string into clipboard
 - ssh/exec into other nodes wesher container
 - paste and execute invite script
