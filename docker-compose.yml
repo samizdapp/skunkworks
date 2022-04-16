@@ -26,6 +26,7 @@ volumes:
   wesher:
   etc:
   caddydata:
+  hubweb:
 services:
   wireguard:
     build: ./services/wireguard
@@ -41,6 +42,8 @@ services:
     container_name: pihole1
     build: ./services/pihole
     privileged: true
+    depends_on:
+      - wireguard
     volumes:
       - "pihole1_config:/etc/pihole"
       - "dnsmasq1_config:/etc/dnsmasq.d"
@@ -53,8 +56,6 @@ services:
       - PIHOLE_INTERFACE=wgone
       - PIHOLE_ADDRESS=10.128.0.1
       - LIGHTTPD_PORT=10001
-    depends_on:
-      - wireguard
     labels:
       io.balena.features.dbus: "1"
 
@@ -62,20 +63,20 @@ services:
     container_name: pihole2
     build: ./services/pihole
     privileged: true
+    network_mode: host
     volumes:
       - "pihole2_config:/etc/pihole"
       - "dnsmasq2_config:/etc/dnsmasq.d"
     dns:
       - "127.0.0.1"
       - "1.1.1.1"
-    network_mode: host
+    depends_on:
+      - wireguard
     environment:
       - INTERFACE=wgtwo
       - PIHOLE_INTERFACE=wgtwo
       - PIHOLE_ADDRESS=10.128.0.2
       - LIGHTTPD_PORT=10002
-    depends_on:
-      - wireguard
     labels:
       io.balena.features.dbus: "1"
 
@@ -91,23 +92,37 @@ services:
       - extra_certs:/usr/local/share/ca-certificates/extra
       - caddydata:/data
       - wesher:/wesher
+      - hubweb:/var/www/hubzilla
   wesher:
     build: ./services/wesher
     network_mode: host
     privileged: true
     volumes:
       - wesher:/var/lib/wesher
-  # pleroma_db:
-  #   image: amd64/postgres:12.9-alpine
-  #   container_name: pleroma_db
-  #   restart: always
+  # hubzilla:
+  #   image: sebt3/hubzilla
+  #   networks:
+  #     - public
+  #     - hubzilla
+  #   volumes:
+  #     - hubweb:/var/www/html
   #   environment:
-  #     POSTGRES_USER: pleroma
-  #     POSTGRES_PASSWORD: ChangeMe!
-  #     POSTGRES_DB: pleroma
+  #     - DB_TYPE=postgres
+  #     - DB_HOST=postgres
+  #     - DB_USER=samizdapp
+  #     - DB_PASSWORD=samizdapp
+  # postgres:
+  #   image: amd64/postgres:12.9-alpine
+  #   container_name: postgres
+  #   restart: always
+  #   networks:
+  #     - hubzilla
+  #   environment:
+  #     POSTGRES_USER: samizdapp
+  #     POSTGRES_PASSWORD: samizdapp
+  #     POSTGRES_DB: hub
   #   volumes:
   #     - postgres:/var/lib/postgresql/data
-
   # pleroma:
   #   build: ./services/docker-pleroma/
   #   image: pleroma

@@ -103,4 +103,3 @@ wg-quick down /wireguard/wgone.conf
 wg-quick down /wireguard/wgtwo.conf
 wg-quick up /wireguard/wgone.conf
 wg-quick up /wireguard/wgtwo.conf
-
