@@ -47,7 +47,7 @@ else
             STRINGARRAY=($line)
             HOST=${STRINGARRAY[1]}
 
-            curl http://$HOST.cacert/root.crt > /usr/local/share/ca-certificates/$HOST.crt
+            curl --interface overlay$HOST http://$HOST.cacert/root.crt > /usr/local/share/ca-certificates/$HOST.crt
         fi
     done < /etc/hosts
 
