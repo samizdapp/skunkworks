@@ -1,9 +1,22 @@
 {
     local_certs
     auto_https disable_redirects
+    debug
+    log {
+        output file /wesher/caddy.log
+    }
 }
 
 http://*.local {
+    file_server browse {
+        root /
+    }
+}
+
+https://*.local {
+    tls internal {
+        on_demand
+    }
     file_server browse {
         root /
     }
@@ -34,6 +47,12 @@ http://roaming.dns {
 pleroma.wg {
     reverse_proxy localhost:4000 {
         header_up Host {upstream_hostport}
+    }
+}
+
+*.peertube.wg {
+    file_server browse {
+        root /data/caddy/pki/authorities/local/
     }
 }
 

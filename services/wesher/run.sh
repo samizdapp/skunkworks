@@ -25,12 +25,12 @@ CLUSTER_KEY=$(cat /var/lib/wesher/cluster.key)
 
 ./watch_hosts.sh & jobs
 
-LAN_JOIN_COMMAND="./wesher --cluster-port $WESHER_CONTROL_PORT --wireguard-port $WESHER_WG_PORT --overlay-net fe80:$WESHER_WG_SUB::/32 --interface $WESHER_IFACE --join $LAN_ADDR --cluster-key $CLUSTER_KEY --bind-iface wlan0"
+LAN_JOIN_COMMAND="./wesher --cluster-port $WESHER_CONTROL_PORT --wireguard-port $WESHER_WG_PORT --overlay-net fec0:$WESHER_WG_SUB::/32 --interface $WESHER_IFACE --join $LAN_ADDR --cluster-key $CLUSTER_KEY --bind-iface $BIND_IFACE"
 echo $LAN_JOIN_COMMAND
 echo "#!/bin/bash" > /var/lib/wesher/lan_invite.sh
 echo $LAN_JOIN_COMMAND >> /var/lib/wesher/lan_invite.sh
 
-WAN_JOIN_COMMAND="./wesher --cluster-port $WESHER_CONTROL_PORT --wireguard-port $WESHER_WG_PORT --overlay-net fe80:$WESHER_WG_SUB::/32 --interface $WESHER_IFACE --join $WAN_ADDR --cluster-key $CLUSTER_KEY --bind-iface wlan0"
+WAN_JOIN_COMMAND="./wesher --cluster-port $WESHER_CONTROL_PORT --wireguard-port $WESHER_WG_PORT --overlay-net fec0:$WESHER_WG_SUB::/32 --interface $WESHER_IFACE --join $WAN_ADDR --cluster-key $CLUSTER_KEY --bind-iface $BIND_IFACE"
 echo $WAN_JOIN_COMMAND
 echo "#!/bin/bash" > /var/lib/wesher/wan_invite.sh
 echo $WAN_JOIN_COMMAND >> /var/lib/wesher/wan_invite.sh
@@ -39,4 +39,4 @@ echo $WAN_JOIN_COMMAND >> /var/lib/wesher/wan_invite.sh
 chmod +x /var/lib/wesher/lan_invite.sh
 chmod +x /var/lib/wesher/wan_invite.sh
 
-./wesher --init true --cluster-port $WESHER_CONTROL_PORT --wireguard-port $WESHER_WG_PORT --overlay-net fe80:$WESHER_WG_SUB::/32 --interface $WESHER_IFACE --log-level debug --cluster-key $CLUSTER_KEY --bind-iface wlan0
+./wesher --init true --cluster-port $WESHER_CONTROL_PORT --wireguard-port $WESHER_WG_PORT --overlay-net fec0:$WESHER_WG_SUB::/32 --interface $WESHER_IFACE --log-level debug --cluster-key $CLUSTER_KEY --bind-iface $BIND_IFACE

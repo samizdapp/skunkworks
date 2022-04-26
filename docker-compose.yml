@@ -99,6 +99,7 @@ services:
     privileged: true
     volumes:
       - wesher:/var/lib/wesher
+      - certs:/usr/local/share/ca-certificates
   # hubzilla:
   #   image: sebt3/hubzilla
   #   networks:
