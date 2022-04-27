@@ -1,7 +1,7 @@
 #1/bin/bash
 
 # This is a bit of a hack, eventually we're going to run into a port collision
-WESHER_WG_SUB=$(sha1sum <<<$(hostname)|cut -c1-1)
+WESHER_WG_SUB=$((0x$(sha1sum <<<$(hostname)|cut -c1-1)0))
 WESHER_WG_PORT=$((0x$(sha1sum <<<$(hostname)|cut -c1-3)0))
 WESHER_CONTROL_PORT=$((0x$(sha1sum <<<$WESHER_WG_PORT|cut -c1-3)0))
 WESHER_IFACE="overlay$(hostname)"
