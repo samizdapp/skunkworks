@@ -24,6 +24,7 @@ upnpc -a $lan $port $port UDP
 if [ ! -f /wireguard/wgone.conf ]
 then
 
+
 echo "
 [Interface]
 Address = 10.128.0.10/31
