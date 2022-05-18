@@ -5,3 +5,5 @@
 [submodule "services/yggdrasil"]
 	path = services/yggdrasil
 	url = https://github.com/samizdapp/yggdrasil-go.git
+[submodule "services/yggdrasil/"]
+	branch = develop
