@@ -276,6 +276,8 @@ services:
     build:
       context: services/yggdrasil
       dockerfile: contrib/docker/Dockerfile
+      args:
+        PKGVER: 0.1
     privileged: true
     network_mode: host
     volumes:
