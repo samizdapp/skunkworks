@@ -27,6 +27,7 @@ volumes:
   etc:
   caddydata:
   hubweb:
+  yggdrasil_config:
 services:
   wireguard:
     build: ./services/wireguard
@@ -270,3 +271,12 @@ services:
   # #   #   volumes:
   # #   #     - ./docker-volume/opendkim/keys:/etc/opendkim/keys
   # #   #   restart: "always"
+  yggdrasil:
+    # https://stackoverflow.com/a/37090165
+    build:
+      context: services/yggdrasil
+      dockerfile: contrib/docker/Dockerfile
+    privileged: true
+    network_mode: host
+    volumes:
+      - yggdrasil_config:/etc/yggdrasil-network
